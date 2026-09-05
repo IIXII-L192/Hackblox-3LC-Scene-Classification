@@ -1,0 +1,58 @@
+# Intel Scene - 3LC Kaggle Competition Configuration
+# ============================================================
+# Data-Centric AI Challenge with 3LC (powered by 3LC)
+# NOTE: informational only — scripts use their own constants.
+# All counts below are sourced from host_manifests/dataset_stats.json.
+
+# Competition Settings
+competition:
+  name: "3LC Intel Scene - Data-Centric AI Challenge"
+  task: "multiclass_classification"
+  description: "Classify natural scenes into 6 categories using data-centric AI with 3LC."
+
+# Dataset Configuration
+dataset:
+  name: "intel-scene"
+  num_classes: 6                # dataset_stats.json: class_to_index (6 entries)
+  class_names:                  # dataset_stats.json: class_to_index
+    - "buildings"   # 0
+    - "forest"      # 1
+    - "glacier"     # 2
+    - "mountain"    # 3
+    - "sea"         # 4
+    - "street"      # 5
+  counts:                       # dataset_stats.json: totals + splits
+    seed_labeled: 600           # totals.seed (splits.seed: 100 per class)
+    pool_unlabeled: 6000        # totals.pool (splits.pool: 1000 per class)
+    val: 1200                   # totals.val  (splits.val: 200 per class)
+    test: 1800                  # totals.test (splits.test: 300 per class)
+
+# 3LC Project settings
+tlc:
+  project_name: "Intel-Scene"
+  dataset_name: "intel-scene"
+
+# Data-Centric Constraints
+constraints:
+  # Model architecture (FIXED - no changes allowed)
+  model: "resnet18"
+  # Final train table may have at most 3,000 rows with weight=1
+  max_weight1_rows: 3000
+
+# Training Configuration (reference; train.py uses its own constants)
+training:
+  batch_size: 16
+  num_workers: 0
+  epochs: 10
+  learning_rate: 0.0001
+  image_size: 150
+
+# Scoring (Kaggle: accuracy on hidden test set)
+scoring:
+  metric: "accuracy"  # Classification accuracy (0-1)
+
+# File Paths (relative to competition root)
+paths:
+  train_dir: "data/train"
+  val_dir: "data/val"
+  test_dir: "data/test"

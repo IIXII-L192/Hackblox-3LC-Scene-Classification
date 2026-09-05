@@ -1,0 +1,7 @@
+data/
+*.pth
+__pycache__/
+*.pyc
+3LC_Intel-Scene_Project.zip
+.venv/
+3lc-env/
