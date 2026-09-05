@@ -11,7 +11,7 @@ from datetime import datetime
 import csv
 import shutil
 
-SEEDS = [42, 101, 777]
+SEEDS = [42, 101, 777, 2024, 999]
 MODEL_PATHS = [Path(f"best_model_seed{s}.pth") for s in SEEDS]
 TEST_DIR = Path("data/test")
 OUTPUT_PATH = Path("submission.csv")

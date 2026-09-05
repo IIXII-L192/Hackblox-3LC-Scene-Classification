@@ -16,7 +16,7 @@ import os
 import sys
 import math
 
-SEEDS = [42, 101, 777]
+SEEDS = [2024, 999]
 EPOCHS = 40
 BATCH_SIZE = 16
 LEARNING_RATE = 0.001
