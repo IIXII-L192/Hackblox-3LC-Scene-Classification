@@ -132,7 +132,7 @@ def predict_ensemble_tta(models_list, raw_images, device):
             batch_tensors = torch.stack([t(img) for img in raw_images]).to(device)
             with torch.no_grad():
                 logits = model(batch_tensors)
-                probs = F.softmax(logits, dim=1)
+                probs = F.softmax(logits / 0.85, dim=1)
             if total_probs is None:
                 total_probs = probs
             else:
@@ -231,6 +231,8 @@ def main():
     timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
     history_path = SUBMISSIONS_DIR / f"submission_ensemble_{timestamp}.csv"
     shutil.copyfile(OUTPUT_PATH, history_path)
+    shutil.copyfile(OUTPUT_PATH, "submission1.csv")
+    print(f"  [OK] Saved copy to: submission1.csv")
     print(f"  [OK] Timestamped copy archived to: {history_path}")
 
     print("=" * 70)

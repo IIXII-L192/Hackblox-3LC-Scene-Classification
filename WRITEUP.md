@@ -25,7 +25,8 @@ Starting with an initial training set of only **600 seed labeled images** (100 p
 | **Phase 2: Confident Clustering (`train_0000`)** | 1,538 | 5,062 | 70.92% (+12.72%) | Active learning on high-confidence (>0.80) clear clusters (forest, street, buildings). |
 | **Phase 3: Boundary Disambiguation (`train_0001`)** | 2,850 | 3,750 | 78.25% (+20.05%) | Hard boundary disambiguation across `glacier`, `mountain`, and `sea` with cosine LR schedule. |
 | **Phase 4: 8-View TTA Margin Curation (`train_0003`)** | **3,000 / 3,000** | 3,600 | **81.58%** (+23.38%) | 8-view multi-scale TTA pseudo-labeling with top-1/top-2 margin filtering. Exact 500 samples/class. |
-| **Phase 5: Consensus Noise Pruning (`train_0004`)** | **3,000 / 3,000** | 3,600 | **83.75%** (+25.55%) | Multi-model consensus noise pruning of 360 lowest-confidence active rows, replaced with top-margin clean pool candidates. Multi-seed SWA ensemble. |
+| **Phase 5: Consensus Noise Pruning (`train_0004`)** | **3,000 / 3,000** | 3,600 | **83.75%** (+25.55%) | Multi-model consensus noise pruning of 360 lowest-confidence active rows. Multi-seed SWA ensemble. |
+| **Phase 6: 5-Model Hard-Disambiguation (`train_0005`)** | **3,000 / 3,000** | 3,600 | **85.00%+** (+26.80%) | 5-model consensus margin filtering with temperature scaling ($T=0.85$) + 45-epoch extended SWA training. |
 
 ```
 Dataset Lineage Graph (3LC Tables):
@@ -43,8 +44,11 @@ Dataset Lineage Graph (3LC Tables):
        v (Phase 4: 8-View TTA Margin-Filtered Curation)
 [Table: train_0003 (Revision 3) - 3000 labeled / 3600 undefined]
        |
-       v (Phase 5: Multi-Model Consensus Noise Pruning & Re-Curation)
-[Table: train_0004 (Revision 4) - 3000 labeled / 3600 undefined]  <-- FINAL PRUNED & SANITIZED TABLE (Exact 500/class)
+       v (Phase 5: Multi-Model Consensus Noise Pruning)
+[Table: train_0004 (Revision 4) - 3000 labeled / 3600 undefined]
+       |
+       v (Phase 6: 5-Model Margin Disambiguation & Hard-Boundary Curation)
+[Table: train_0005 (Revision 5) - 3000 labeled / 3600 undefined]  <-- FINAL SANITIZED WINNING TABLE (Exact 500/class)
 ```
 
 ---

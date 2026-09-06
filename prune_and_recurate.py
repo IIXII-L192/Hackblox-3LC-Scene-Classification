@@ -14,8 +14,8 @@ CLASSES = ["buildings", "forest", "glacier", "mountain", "sea", "street", "undef
 PROJECT_NAME = "Intel-Scene"
 DATASET_NAME = "intel-scene"
 MAX_ALLOWED_WEIGHT1 = 3000
-SEEDS = [42, 101, 777]
-PRUNE_BOTTOM_PER_CLASS = 60
+SEEDS = [42, 101, 777, 2024, 999]
+PRUNE_BOTTOM_PER_CLASS = 50
 
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 print(f"Using device: {device}")
@@ -90,13 +90,19 @@ def load_ensemble_models():
         p = Path(f"best_model_seed{s}.pth")
         if p.exists():
             m = ResNet18Classifier(num_classes=6).to(device)
-            m.load_state_dict(torch.load(p, map_location=device))
+            state = torch.load(p, map_location=device)
+            if "n_averaged" in state:
+                del state["n_averaged"]
+            m.load_state_dict(state)
             m.eval()
             models_list.append(m)
             print(f"  [OK] Loaded {p}")
     if not models_list:
         m = ResNet18Classifier(num_classes=6).to(device)
-        m.load_state_dict(torch.load("best_model.pth", map_location=device))
+        state = torch.load("best_model.pth", map_location=device)
+        if "n_averaged" in state:
+            del state["n_averaged"]
+        m.load_state_dict(state)
         m.eval()
         models_list.append(m)
     return models_list
